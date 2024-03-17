@@ -1,4 +1,5 @@
 import { mapAsset } from 'src/dtos/asset-response.dto';
+import { AuthDto } from 'src/dtos/auth.dto';
 import { SearchSuggestionType } from 'src/dtos/search.dto';
 import { IAssetRepository } from 'src/interfaces/asset.interface';
 import { IPersonRepository } from 'src/interfaces/person.interface';
@@ -45,11 +46,11 @@ describe(SearchService.name, () => {
     it('should get assets by city and tag', async () => {
       assetMock.getAssetIdByCity.mockResolvedValue({
         fieldName: 'exifInfo.city',
-        items: [{ value: 'Paris', data: assetStub.image.id }],
+        items: [{ value: 'test-city', data: assetStub.withLocation.id }],
       });
-      assetMock.getByIdsWithAllRelations.mockResolvedValue([assetStub.image, assetStub.imageFrom2015]);
+      assetMock.getByIdsWithAllRelations.mockResolvedValue([assetStub.withLocation]);
       const expectedResponse = [
-        { fieldName: 'exifInfo.city', items: [{ value: 'Paris', data: mapAsset(assetStub.image) }] },
+        { fieldName: 'exifInfo.city', items: [{ value: 'test-city', data: mapAsset(assetStub.withLocation) }] },
       ];
 
       const result = await sut.getExploreData(authStub.user1);
